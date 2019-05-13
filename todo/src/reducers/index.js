@@ -1,16 +1,17 @@
-import { ADD_TODO, TOGGLE_COMPLETE } from '../actions';
+import { ADD_TODO, TOGGLE_COMPLETE, DELETE_TODO } from '../actions';
 
 const initialState = {
   todos: []
 }
 
+let nextId = 0;
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TODO:
     return {
         ...state,
         todos: [...state.todos, {
-          id: Date.now(),
+          id: nextId++,
           value: action.payload,
           completed: false
         }]
@@ -25,6 +26,19 @@ export default (state = initialState, action) => {
       ...state,
       todos: completedTodo
 
+    }
+    case DELETE_TODO:
+    const newTodosArr = [...state.todos];
+
+    const index = newTodosArr.findIndex(todo => {
+      return todo.id === action.payload.id
+    });
+    
+    newTodosArr.splice(index, 1);
+
+    return {
+      ...state,
+      todos: newTodosArr
     }
     default:
       return state;

@@ -1,22 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { toggleComplete } from '../actions';
+import { toggleComplete, deleteTodo } from '../actions';
 
 import TodoForm from './TodoForm';
 
 class Todos extends Component {
+  state: {
+    deletedTodos: null,
+  }
 
-  clickHandler = event => {
+  completeHandler = event => {
     event.preventDefault();
 
     this.props.toggleComplete(parseInt(event.target.id, 10));
   }
 
+  deleteHandler = event => {
+    event.preventDefault();
+
+    const deletedArr = this.props.todos.filter(todo => {
+      return todo.id === parseInt(event.target.id, 10);
+    });
+
+    this.setState({
+      deletedTodos: deletedArr[0]
+    },() => this.props.deleteTodo(this.state.deletedTodos));
+  }
+
   render() {
     const todo = this.props.todos.map(todo => {
-      return <li name='todo' id={todo.id} completed={todo.completed} key={todo.id} onClick={this.clickHandler}>
+      return <li name='todo' id={todo.id} key={todo.id} onClick={this.completeHandler}>
                 {todo.value}
-                <span name='delete' deleteId={todo.id} >X</span>
+                <span name='delete' id={todo.id} onClick={this.deleteHandler} >X</span>
             </li>;
     })
     return (
@@ -38,4 +53,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { toggleComplete })(Todos);
+export default connect(mapStateToProps, { toggleComplete, deleteTodo })(Todos);
