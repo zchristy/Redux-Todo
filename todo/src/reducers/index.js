@@ -1,4 +1,4 @@
-import { ADD_TODO, TOGGLE_COMPLETE, DELETE_TODO } from '../actions';
+import { ADD_TODO, TOGGLE_COMPLETE, DELETE_TODO, CLEAR_COMPLETED } from '../actions';
 
 const initialState = {
   todos: []
@@ -33,12 +33,17 @@ export default (state = initialState, action) => {
     const index = newTodosArr.findIndex(todo => {
       return todo.id === action.payload.id
     });
-    
+
     newTodosArr.splice(index, 1);
 
     return {
       ...state,
       todos: newTodosArr
+    }
+    case CLEAR_COMPLETED:
+    return {
+      ...state,
+      todos: action.payload
     }
     default:
       return state;

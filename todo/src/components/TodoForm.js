@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import { addTodo } from '../actions';
 
+import { Form , FormContainer } from '../styles/styles'
+
 class TodoForm extends Component {
   state = {
     newTodo: ''
@@ -27,11 +29,11 @@ class TodoForm extends Component {
 
   render() {
     return (
-      <div className='todo-form-container'>
-        <form onSubmit={this.submitHandler}>
+      <FormContainer>
+        <Form onSubmit={this.submitHandler}>
           <input value={this.state.newTodo} onChange={this.changeHandler} type="text" placeholder="Insert your task here..."  />
-        </form>
-      </div>
+        </Form>
+      </FormContainer>
     );
   }
 }
